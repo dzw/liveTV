@@ -41,7 +41,14 @@ public class CustomKeyDownLive extends GestureDetector.SimpleOnGestureListener {
     }
 
     public boolean hasEvent(KeyEvent event) {
-        return KeyUtil.isEnterKey(event) || KeyUtil.isUpKey(event) || KeyUtil.isDownKey(event) || KeyUtil.isLeftKey(event) || KeyUtil.isRightKey(event) || KeyUtil.isDigitKey(event) || KeyUtil.isMenuKey(event) || event.isLongPress();
+        return KeyUtil.isEnterKey(event)
+                || KeyUtil.isUpKey(event)
+                || KeyUtil.isDownKey(event)
+                || KeyUtil.isLeftKey(event)
+                || KeyUtil.isRightKey(event)
+                || KeyUtil.isDigitKey(event)
+                || KeyUtil.isMenuKey(event)
+                || event.isLongPress();
     }
 
     public void onKeyDown(KeyEvent event) {

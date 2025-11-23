@@ -1,5 +1,6 @@
 package com.fongmi.android.tv.api.config;
 
+
 import android.text.TextUtils;
 
 import com.fongmi.android.tv.App;
@@ -149,7 +150,7 @@ public class VodConfig {
     private void parseDepot(JsonObject object, Callback callback) {
         List<Depot> items = Depot.arrayFrom(object.getAsJsonArray("urls").toString());
         List<Config> configs = new ArrayList<>();
-        for (Depot item : items) configs.add(Config.find(item, 0));
+        for (Depot item : items) configs.add(Config.find(item, Config.CFG_VOD));
         Config.delete(config.getUrl());
         config = configs.get(0);
         loadConfig(callback);
@@ -209,7 +210,7 @@ public class VodConfig {
     }
 
     private void initLive(JsonObject object) {
-        Config temp = Config.find(config, 1).save();
+        Config temp = Config.find(config, Config.CFG_LIVE).save();
         boolean sync = LiveConfig.get().needSync(config.getUrl());
         if (sync) LiveConfig.get().config(temp.update()).parse(object);
     }
@@ -345,7 +346,7 @@ public class VodConfig {
     private void setWall(String wall) {
         this.wall = wall;
         boolean sync = !TextUtils.isEmpty(wall) && WallConfig.get().needSync(wall);
-        Config temp = Config.find(wall, config.getName(), 2).save();
+        Config temp = Config.find(wall, config.getName(), Config.CFG_WALL).save();
         if (sync) WallConfig.get().config(temp.update());
     }
 }

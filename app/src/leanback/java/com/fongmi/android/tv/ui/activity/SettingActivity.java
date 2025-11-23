@@ -79,8 +79,7 @@ public class SettingActivity extends BaseActivity implements ConfigCallback, Sit
 
     @Override
     protected void initView() {
-        mBinding.vod.requestFocus();
-        mBinding.vodUrl.setText(VodConfig.getDesc());
+        mBinding.live.requestFocus();
         mBinding.liveUrl.setText(LiveConfig.getDesc());
         mBinding.wallUrl.setText(WallConfig.getDesc());
         mBinding.versionText.setText(BuildConfig.VERSION_NAME);
@@ -105,9 +104,11 @@ public class SettingActivity extends BaseActivity implements ConfigCallback, Sit
 
     @Override
     protected void initEvent() {
-        mBinding.vod.setOnClickListener(this::onVod);
-        mBinding.doh.setOnClickListener(this::setDoh);
         mBinding.live.setOnClickListener(this::onLive);
+        mBinding.live.setOnLongClickListener(this::onLiveEdit);
+        mBinding.liveHome.setOnClickListener(this::onLiveHome);
+        mBinding.liveHistory.setOnClickListener(this::onLiveHistory);
+
         mBinding.wall.setOnClickListener(this::onWall);
         mBinding.size.setOnClickListener(this::setSize);
         mBinding.cache.setOnClickListener(this::onCache);
@@ -115,14 +116,9 @@ public class SettingActivity extends BaseActivity implements ConfigCallback, Sit
         mBinding.player.setOnClickListener(this::onPlayer);
         mBinding.restore.setOnClickListener(this::onRestore);
         mBinding.version.setOnClickListener(this::onVersion);
-        mBinding.vod.setOnLongClickListener(this::onVodEdit);
-        mBinding.vodHome.setOnClickListener(this::onVodHome);
-        mBinding.live.setOnLongClickListener(this::onLiveEdit);
-        mBinding.liveHome.setOnClickListener(this::onLiveHome);
         mBinding.wall.setOnLongClickListener(this::onWallEdit);
         mBinding.incognito.setOnClickListener(this::setIncognito);
-        mBinding.vodHistory.setOnClickListener(this::onVodHistory);
-        mBinding.liveHistory.setOnClickListener(this::onLiveHistory);
+
         mBinding.wallDefault.setOnClickListener(this::setWallDefault);
         mBinding.wallRefresh.setOnClickListener(this::setWallRefresh);
         mBinding.wallRefresh.setOnLongClickListener(this::onWallHistory);
@@ -138,16 +134,17 @@ public class SettingActivity extends BaseActivity implements ConfigCallback, Sit
     }
 
     private void load(Config config) {
-        switch (config.getType()) {
-            case 0:
-                VodConfig.load(config, getCallback(0));
+        int type = config.getType();
+        switch (type) {
+            case Config.CFG_VOD:
+                VodConfig.load(config, getCallback(type));
                 break;
-            case 1:
-                LiveConfig.load(config, getCallback(1));
+            case Config.CFG_LIVE:
+                LiveConfig.load(config, getCallback(type));
                 break;
-            case 2:
+            case Config.CFG_WALL:
                 Setting.putWall(0);
-                WallConfig.load(config, getCallback(2));
+                WallConfig.load(config, getCallback(type));
                 break;
         }
     }
@@ -181,7 +178,7 @@ public class SettingActivity extends BaseActivity implements ConfigCallback, Sit
         setCacheText();
         Notify.dismiss();
         RefreshEvent.config();
-        if (type != 0) return;
+        if (type != Config.CFG_VOD) return;
         RefreshEvent.video();
         RefreshEvent.history();
     }
@@ -197,30 +194,21 @@ public class SettingActivity extends BaseActivity implements ConfigCallback, Sit
         LiveConfig.get().setHome(item);
     }
 
-    private void onVod(View view) {
-        ConfigDialog.create(this).launcher(launcher).type(type = 0).show();
-    }
-
     private void onLive(View view) {
-        ConfigDialog.create(this).launcher(launcher).type(type = 1).show();
+        ConfigDialog.create(this).launcher(launcher).type(type = Config.CFG_LIVE).show();
     }
 
     private void onWall(View view) {
-        ConfigDialog.create(this).launcher(launcher).type(type = 2).show();
-    }
-
-    private boolean onVodEdit(View view) {
-        ConfigDialog.create(this).launcher(launcher).type(type = 0).edit().show();
-        return true;
+        ConfigDialog.create(this).launcher(launcher).type(type = Config.CFG_WALL).show();
     }
 
     private boolean onLiveEdit(View view) {
-        ConfigDialog.create(this).launcher(launcher).type(type = 1).edit().show();
+        ConfigDialog.create(this).launcher(launcher).type(type = Config.CFG_LIVE).edit().show();
         return true;
     }
 
     private boolean onWallEdit(View view) {
-        ConfigDialog.create(this).launcher(launcher).type(type = 2).edit().show();
+        ConfigDialog.create(this).launcher(launcher).type(type = Config.CFG_WALL).edit().show();
         return true;
     }
 
@@ -233,11 +221,11 @@ public class SettingActivity extends BaseActivity implements ConfigCallback, Sit
     }
 
     private void onVodHistory(View view) {
-        HistoryDialog.create(this).type(type = 0).show();
+        HistoryDialog.create(this).type(type = Config.CFG_VOD).show();
     }
 
     private void onLiveHistory(View view) {
-        HistoryDialog.create(this).type(type = 1).show();
+        HistoryDialog.create(this).type(type = Config.CFG_LIVE).show();
     }
 
     private void onPlayer(View view) {
@@ -255,11 +243,11 @@ public class SettingActivity extends BaseActivity implements ConfigCallback, Sit
 
     private void setWallRefresh(View view) {
         Setting.putWall(0);
-        WallConfig.get().load(getCallback(2));
+        WallConfig.get().load(getCallback(Config.CFG_WALL));
     }
 
     private boolean onWallHistory(View view) {
-        HistoryDialog.create(this).type(type = 2).show();
+        HistoryDialog.create(this).type(type = Config.CFG_WALL).show();
         return true;
     }
 
@@ -328,19 +316,20 @@ public class SettingActivity extends BaseActivity implements ConfigCallback, Sit
     private void initConfig() {
         WallConfig.get().init().load();
         LiveConfig.get().init().load();
-        VodConfig.get().init().load(getCallback(0));
+        VodConfig.get().init().load(getCallback(Config.CFG_VOD));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRefreshEvent(RefreshEvent event) {
         if (event.getType() != RefreshEvent.Type.CONFIG) return;
-        mBinding.vodUrl.setText(VodConfig.getDesc());
         mBinding.liveUrl.setText(LiveConfig.getDesc());
         mBinding.wallUrl.setText(WallConfig.getDesc());
     }
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() != RESULT_OK || result.getData() == null || result.getData().getData() == null) return;
-        setConfig(Config.find("file:/" + FileChooser.getPathFromUri(result.getData().getData()).replace(Path.rootPath(), ""), type));
+        setConfig(Config.find(
+                "file:/" + FileChooser.getPathFromUri(result.getData().getData()).replace(Path.rootPath(), ""),
+                type));
     });
 }

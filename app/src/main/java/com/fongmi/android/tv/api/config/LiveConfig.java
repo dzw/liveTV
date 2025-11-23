@@ -57,7 +57,11 @@ public class LiveConfig {
     }
 
     public static String getUrl() {
-        return get().getConfig().getUrl();
+        boolean b = true;
+        if (b)
+            return "http://192.168.1.4/iptvmin.txt";
+        else
+            return get().getConfig().getUrl();
     }
 
     public static String getDesc() {
@@ -165,7 +169,7 @@ public class LiveConfig {
     private void parseDepot(JsonObject object, Callback callback) {
         List<Depot> items = Depot.arrayFrom(object.getAsJsonArray("urls").toString());
         List<Config> configs = new ArrayList<>();
-        for (Depot item : items) configs.add(Config.find(item, 1));
+        for (Depot item : items) configs.add(Config.find(item, Config.CFG_LIVE));
         Config.delete(config.getUrl());
         config = configs.get(0);
         loadConfig(callback);

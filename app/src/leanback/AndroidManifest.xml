@@ -83,17 +83,17 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.activity.CastActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="sensorLandscape">
-            <intent-filter>
-                <action android:name="${applicationId}.cast" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
+<!--        <activity-->
+<!--            android:name=".ui.activity.CastActivity"-->
+<!--            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"-->
+<!--            android:exported="true"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:screenOrientation="sensorLandscape">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="${applicationId}.cast" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
 
         <activity
             android:name=".ui.activity.VodActivity"
@@ -113,21 +113,21 @@
             android:launchMode="singleTop"
             android:screenOrientation="sensorLandscape" />
 
-        <activity
-            android:name=".ui.activity.KeepActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:screenOrientation="sensorLandscape" />
+<!--        <activity-->
+<!--            android:name=".ui.activity.KeepActivity"-->
+<!--            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"-->
+<!--            android:screenOrientation="sensorLandscape" />-->
 
-        <activity
-            android:name=".ui.activity.PushActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:screenOrientation="sensorLandscape" />
+<!--        <activity-->
+<!--            android:name=".ui.activity.PushActivity"-->
+<!--            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"-->
+<!--            android:screenOrientation="sensorLandscape" />-->
 
-        <activity
-            android:name=".ui.activity.SearchActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:screenOrientation="sensorLandscape"
-            android:windowSoftInputMode="stateHidden" />
+<!--        <activity-->
+<!--            android:name=".ui.activity.SearchActivity"-->
+<!--            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"-->
+<!--            android:screenOrientation="sensorLandscape"-->
+<!--            android:windowSoftInputMode="stateHidden" />-->
 
         <activity
             android:name=".ui.activity.CollectActivity"

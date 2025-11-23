@@ -1,5 +1,7 @@
 package com.fongmi.android.tv.ui.activity;
 
+import static com.fongmi.android.tv.bean.Config.CFG_LIVE;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -224,7 +226,7 @@ public class HomeActivity extends BaseActivity implements CustomTitleView.Listen
     }
 
     private void loadLive(String url) {
-        LiveConfig.load(Config.find(url, 1), new Callback() {
+        LiveConfig.load(Config.find(url, Config.CFG_LIVE), new Callback() {
             @Override
             public void success() {
                 LiveActivity.start(getActivity());
@@ -260,12 +262,13 @@ public class HomeActivity extends BaseActivity implements CustomTitleView.Listen
 
     private void setFunc() {
         List<Func> items = new ArrayList<>();
-        items.add(Func.create(R.string.home_vod));
-        if (LiveConfig.hasUrl()) items.add(Func.create(R.string.home_live));
-        items.add(Func.create(R.string.home_search));
-        items.add(Func.create(R.string.home_keep));
-        items.add(Func.create(R.string.home_push));
-        items.add(Func.create(R.string.home_cast));
+//        items.add(Func.create(R.string.home_vod));
+        if (LiveConfig.hasUrl())
+            items.add(Func.create(R.string.home_live));
+//        items.add(Func.create(R.string.home_search));
+//        items.add(Func.create(R.string.home_keep));
+//        items.add(Func.create(R.string.home_push));
+//        items.add(Func.create(R.string.home_cast));
         items.add(Func.create(R.string.home_setting));
         mFuncAdapter.setItems(items, new BaseDiffCallback<Func>());
     }
@@ -378,24 +381,24 @@ public class HomeActivity extends BaseActivity implements CustomTitleView.Listen
     @Override
     public void onItemClick(Func item) {
         switch (item.getResId()) {
-            case R.string.home_vod:
-                VodActivity.start(this, mResult.clear());
-                break;
+//            case R.string.home_vod:
+//                VodActivity.start(this, mResult.clear());
+//                break;
             case R.string.home_live:
                 LiveActivity.start(this);
                 break;
-            case R.string.home_search:
-                SearchActivity.start(this);
-                break;
-            case R.string.home_keep:
-                KeepActivity.start(this);
-                break;
-            case R.string.home_push:
-                PushActivity.start(this);
-                break;
-            case R.string.home_cast:
-                CastActivity.start(this);
-                break;
+//            case R.string.home_search:
+//                SearchActivity.start(this);
+//                break;
+//            case R.string.home_keep:
+//                KeepActivity.start(this);
+//                break;
+//            case R.string.home_push:
+//                PushActivity.start(this);
+//                break;
+//            case R.string.home_cast:
+//                CastActivity.start(this);
+//                break;
             case R.string.home_setting:
                 SettingActivity.start(this);
                 break;

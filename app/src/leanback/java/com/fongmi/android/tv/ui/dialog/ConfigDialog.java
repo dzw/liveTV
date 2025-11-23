@@ -110,11 +110,11 @@ public class ConfigDialog implements DialogInterface.OnDismissListener {
 
     private String getUrl() {
         switch (type) {
-            case 0:
+            case Config.CFG_VOD:
                 return VodConfig.getUrl();
-            case 1:
+            case Config.CFG_LIVE:
                 return LiveConfig.getUrl();
-            case 2:
+            case Config.CFG_WALL:
                 return WallConfig.getUrl();
             default:
                 return "";

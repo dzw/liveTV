@@ -20,6 +20,9 @@ import java.util.List;
 
 @Entity(indices = @Index(value = {"url", "type"}, unique = true))
 public class Config {
+    public static final int CFG_VOD = 0;
+    public static final int CFG_LIVE = 1;
+    public static final int CFG_WALL = 2;
 
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
@@ -198,17 +201,17 @@ public class Config {
 
     public static Config vod() {
         Config item = AppDatabase.get().getConfigDao().findOne(0);
-        return item == null ? create(0) : item;
+        return item == null ? create(Config.CFG_VOD) : item;
     }
 
     public static Config live() {
-        Config item = AppDatabase.get().getConfigDao().findOne(1);
-        return item == null ? create(1) : item;
+        Config item = AppDatabase.get().getConfigDao().findOne(Config.CFG_LIVE);
+        return item == null ? create(Config.CFG_LIVE) : item;
     }
 
     public static Config wall() {
-        Config item = AppDatabase.get().getConfigDao().findOne(2);
-        return item == null ? create(2) : item;
+        Config item = AppDatabase.get().getConfigDao().findOne(Config.CFG_WALL);
+        return item == null ? create(Config.CFG_WALL) : item;
     }
 
     public static Config find(int id) {
